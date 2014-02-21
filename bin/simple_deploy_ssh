@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'simple_deploy_ssh'
+
+ARGV.length == 2 || abort('usage: simple_deploy_ssh env stack')
+SimpleDeploySSH.new(*ARGV).connect!
