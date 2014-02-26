@@ -1,6 +1,6 @@
-# SimpleDeploySsh
+# Simple Deploy SSH
 
-TODO: Write a gem description
+A gem to make it easier to ssh to instances managed with simple_deploy
 
 ## Installation
 
@@ -18,7 +18,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+$ simple_deploy qa app
+
+or 
+
+$ simple_deploy prod worker
 
 ## Contributing
 
