@@ -1,9 +1,10 @@
 class SimpleDeploySSH
   VERSION = "0.0.1"
 
-  def initialize(env_name, stack_name)
-    @env_name   = env_name
-    @stack_name = stack_name
+  def initialize(env_name, stack_name, instance_name)
+    @env_name      = env_name
+    @stack_name    = stack_name
+    @instance_name = instance_name
   end
 
   def connect!
@@ -17,14 +18,14 @@ class SimpleDeploySSH
   end
 
   def full_stack_name
-    fsn = list.find { |line| line.match /-\d-#@env_name-\d-#@stack_name-\d/ }
-    raise "stack not found" if fsn.nil?
+    fsn = list.find { |line| line.match /-\d-#@stack_name-\d-#@instance_name-\d/ }
+    raise "instance not found" if fsn.nil?
     fsn
   end
 
   def ip
     command = "simple_deploy instances -e #@env_name -n #{full_stack_name}"
-    `#{command}`
+    `#{command}`.split.first
   end
 
   def ssh_command

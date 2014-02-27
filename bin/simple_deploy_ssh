@@ -1,6 +1,20 @@
 #!/usr/bin/env ruby
 
 require 'simple_deploy_ssh'
+require 'yaml'
 
-ARGV.length == 2 || abort('usage: simple_deploy_ssh env stack')
-SimpleDeploySSH.new(*ARGV).connect!
+ARGV.length == 2 || ARGV.length == 3 || abort('usage: simple_deploy_ssh env stack or simple_deploy_ssh env stack instance')
+
+args = if ARGV.length == 2
+  envs = YAML.load_file(File.expand_path('~/.simple_deploy.yml'))
+  env = ARGV[0]
+  default_stack = envs.fetch("environments").fetch(env)["default_stack"]
+  if default_stack.nil? || default_stack == ''
+    abort("You must pass a stack name or have a default stack defined for your environment in your ~/.simple_deploy.yml")
+  end
+  [env, default_stack, ARGV[1]]
+else
+  ARGV
+end
+
+SimpleDeploySSH.new(*args).connect!
